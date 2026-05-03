@@ -25,6 +25,9 @@ import { attachPiRpcSession } from './pi-rpc.js';
 import { createClaudeStreamHandler } from './claude-stream.js';
 import { loadCritiqueConfigFromEnv } from './critique/config.js';
 import { runOrchestrator } from './critique/orchestrator.js';
+import { createRunRegistry } from './critique/run-registry.js';
+import { handleCritiqueInterrupt } from './critique/interrupt-handler.js';
+import { handleCritiqueRerun } from './critique/rerun-handler.js';
 import { createCopilotStreamHandler } from './copilot-stream.js';
 import { createJsonEventStreamHandler } from './json-event-stream.js';
 import { renderDesignSystemPreview } from './design-system-preview.js';
@@ -325,6 +328,11 @@ fs.mkdirSync(PROJECTS_DIR, { recursive: true });
 // surfaces immediately as a boot-time RangeError instead of silently at
 // run time. Default: enabled=false (M0 dark launch).
 const critiqueCfg = loadCritiqueConfigFromEnv();
+
+// In-process registry of in-flight critique runs so the interrupt endpoint
+// can cascade an AbortController to the matching orchestrator invocation.
+// Created once per process; not persisted across daemon restarts.
+const critiqueRunRegistry = createRunRegistry();
 
 export const SSE_KEEPALIVE_INTERVAL_MS = 25_000;
 
@@ -2511,6 +2519,14 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
         for await (const chunk of child.stdout) yield String(chunk);
       })();
       const critiqueBus = { emit: (e) => send('agent', e) };
+      // Register this run so the interrupt endpoint can signal the orchestrator.
+      const critiqueAbort = new AbortController();
+      critiqueRunRegistry.register({
+        runId: critiqueRunId,
+        projectId: typeof projectId === 'string' ? projectId : '',
+        abort: critiqueAbort,
+        startedAt: Date.now(),
+      });
       // Errors from runOrchestrator surface to the run's error handler via
       // the existing design.runs.start() catch wrapper.
       runOrchestrator({
@@ -2524,11 +2540,14 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
         db,
         bus: critiqueBus,
         stdout: stdoutIterable,
+        signal: critiqueAbort.signal,
       }).then(() => {
         // Orchestrator finished; let the child close handler finalize the run.
       }).catch((err) => {
         send('error', createSseErrorPayload('AGENT_EXECUTION_FAILED', err instanceof Error ? err.message : String(err)));
         design.runs.finish(run, 'failed', 1, null);
+      }).finally(() => {
+        critiqueRunRegistry.unregister(critiqueRunId);
       });
       child.stderr.on('data', (chunk) => send('stderr', { chunk }));
       child.on('error', (err) => {
@@ -2644,6 +2663,57 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
     design.runs.stream(run, req, res);
     design.runs.start(run, () => startChatRun(req.body || {}, run));
   });
+
+  // ---- Critique Theater endpoints (Phase 6) --------------------------------
+
+  // POST /api/projects/:projectId/critique/:runId/interrupt
+  // Cascades an AbortController to the in-flight orchestrator for the given run.
+  app.post(
+    '/api/projects/:projectId/critique/:runId/interrupt',
+    handleCritiqueInterrupt(db, critiqueRunRegistry),
+  );
+
+  // POST /api/projects/:projectId/artifacts/:artifactId/critique/rerun
+  // Generates a new runId, inserts a 'running' row, and fires the orchestrator
+  // in the background. Responds 202 immediately.
+  app.post(
+    '/api/projects/:projectId/artifacts/:artifactId/critique/rerun',
+    handleCritiqueRerun({
+      db,
+      cfg: critiqueCfg,
+      getProject: (id) => getProject(db, id),
+      artifactsDir: ARTIFACTS_DIR,
+      startCritiqueRun: ({ runId, projectId: pId, artifactId, artifactDir, conversationId, cfg }) => {
+        // Reuse the same orchestrator path as the spawn wiring: wrap stdout in
+        // a never-yielding iterable since the rerun spawns its own child in
+        // a separate chat run; here we simply pre-insert the DB row and let
+        // the caller wire up the actual spawn via the chat run system when ready.
+        // The SSE bus for reruns emits into the project event stream.
+        const rerunAbort = new AbortController();
+        critiqueRunRegistry.register({
+          runId,
+          projectId: pId,
+          abort: rerunAbort,
+          startedAt: Date.now(),
+        });
+        runOrchestrator({
+          runId,
+          projectId: pId,
+          conversationId,
+          artifactId,
+          artifactDir,
+          adapter: 'rerun',
+          cfg,
+          db,
+          bus: { emit: () => {} },
+          stdout: (async function* () {})(),
+          signal: rerunAbort.signal,
+        }).finally(() => {
+          critiqueRunRegistry.unregister(runId);
+        });
+      },
+    }),
+  );
 
   // ---- API Proxy (SSE) for API-compatible endpoints ------------------------
   // Browser → daemon → external API. Avoids CORS issues with third-party

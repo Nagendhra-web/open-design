@@ -56,7 +56,9 @@ export interface CritiqueRunInsert {
   projectId: string;
   conversationId?: string | null;
   artifactPath?: string | null;
-  status: CritiqueRunStatus;
+  /** Accepts 'running' in addition to the terminal statuses so callers can
+   *  create in-flight rows without a type cast. */
+  status: CritiqueRunStatus | 'running';
   score?: number | null;
   rounds?: CritiqueRoundSummary[];
   transcriptPath?: string | null;
@@ -301,6 +303,37 @@ export function listCritiqueRunsByProject(
     )
     .all(projectId) as RawCritiqueRunRow[];
   return rows.map(normalizeRow);
+}
+
+/**
+ * Returns the most recent critique_runs row for the given project and artifact,
+ * ordered by updated_at DESC. Returns null when no matching row exists.
+ *
+ * The artifactId corresponds to the directory name under .od/artifacts/; rows
+ * are matched by prefix so both shipped paths (".../<artifactId>/artifact") and
+ * in-progress paths (".../<artifactId>/...") resolve to the same artifact.
+ *
+ * @see specs/current/critique-theater.md § rerun endpoint (Task 6.2)
+ */
+export function getLatestCritiqueRunByArtifact(
+  db: Database.Database,
+  projectId: string,
+  artifactId: string,
+): CritiqueRunRow | null {
+  const raw = db
+    .prepare(
+      `SELECT ${COLS}
+         FROM critique_runs
+        WHERE project_id = ?
+          AND (
+            artifact_path LIKE ?
+            OR id = ?
+          )
+        ORDER BY updated_at DESC
+        LIMIT 1`,
+    )
+    .get(projectId, `%/${artifactId}/%`, artifactId) as RawCritiqueRunRow | undefined;
+  return raw !== undefined ? normalizeRow(raw) : null;
 }
 
 export function deleteCritiqueRun(db: Database.Database, id: string): void {
