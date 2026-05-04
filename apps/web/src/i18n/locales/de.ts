@@ -108,6 +108,8 @@ export const de: Dict = {
   'settings.mediaProviderClear': 'Leeren',
   'settings.mediaProviderPlaceholder': 'API-Key einfügen',
   'settings.mediaProviderBaseUrlPlaceholder': 'Standard-Base-URL überschreiben',
+  'settings.features': 'Funktionen',
+  'settings.featuresHint': 'Experimentelle Funktionen',
   'settings.about': 'Info',
   'settings.aboutHint': 'Version und Laufzeitdetails',
   'settings.appVersion': 'Version',

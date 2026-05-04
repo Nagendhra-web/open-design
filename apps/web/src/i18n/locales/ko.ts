@@ -108,6 +108,8 @@ export const ko: Dict = {
   'settings.mediaProviderClear': '지우기',
   'settings.mediaProviderPlaceholder': 'API 키를 붙여넣으세요',
   'settings.mediaProviderBaseUrlPlaceholder': '기본 Base URL 재정의',
+  'settings.features': '기능',
+  'settings.featuresHint': '실험적 기능',
   'settings.about': '정보',
   'settings.aboutHint': '버전 및 런타임 세부 정보',
   'settings.appVersion': '버전',

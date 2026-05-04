@@ -1,5 +1,5 @@
 /**
- * TheaterContainer — top-level mount for the Critique Theater.
+ * TheaterContainer: top-level mount for the Critique Theater.
  *
  * Subscribes to the project SSE bus via useCritiqueStream and renders the
  * correct inner component per phase:

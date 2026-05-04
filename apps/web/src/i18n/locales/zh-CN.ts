@@ -106,6 +106,8 @@ export const zhCN: Dict = {
   'settings.mediaProviderClear': '清除',
   'settings.mediaProviderPlaceholder': '粘贴 API key',
   'settings.mediaProviderBaseUrlPlaceholder': '覆盖默认 Base URL',
+  'settings.features': '功能',
+  'settings.featuresHint': '实验性功能',
   'settings.about': '关于',
   'settings.aboutHint': '版本和运行时详情',
   'settings.appVersion': '版本',

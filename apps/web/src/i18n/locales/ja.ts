@@ -108,6 +108,8 @@ export const ja: Dict = {
   'settings.mediaProviderClear': 'クリア',
   'settings.mediaProviderPlaceholder': 'APIキーを貼り付け',
   'settings.mediaProviderBaseUrlPlaceholder': 'デフォルトのベース URL を上書き',
+  'settings.features': '機能',
+  'settings.featuresHint': '試験的な機能',
   'settings.about': 'About',
   'settings.aboutHint': 'バージョンと実行環境の詳細',
   'settings.appVersion': 'バージョン',

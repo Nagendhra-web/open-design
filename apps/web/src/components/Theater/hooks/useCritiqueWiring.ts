@@ -1,10 +1,10 @@
 /**
- * useCritiqueWiring — thin adapter consumed by ProjectView.
+ * useCritiqueWiring: thin adapter consumed by ProjectView.
  *
  * Returns the three values ProjectView needs to render TheaterContainer:
- *   enabled     — read from AppConfig.critiqueTheaterEnabled (default false).
- *   onInterrupt — POSTs to /api/projects/:projectId/critique/:runId/interrupt.
- *   onRerun     — POSTs to /api/projects/:projectId/artifacts/:artifactId/critique/rerun.
+ *   enabled: read from AppConfig.critiqueTheaterEnabled (default false).
+ *   onInterrupt: POSTs to /api/projects/:projectId/critique/:runId/interrupt.
+ *   onRerun: POSTs to /api/projects/:projectId/artifacts/:artifactId/critique/rerun.
  *
  * Errors are swallowed (non-fatal UI callbacks); callers do not need
  * try/catch at the call site.

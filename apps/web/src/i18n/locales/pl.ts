@@ -108,6 +108,8 @@ export const pl: Dict = {
   'settings.mediaProviderClear': 'Wyczyść',
   'settings.mediaProviderPlaceholder': 'Wklej klucz API',
   'settings.mediaProviderBaseUrlPlaceholder': 'Nadpisz domyślny bazowy URL',
+  'settings.features': 'Funkcje',
+  'settings.featuresHint': 'Eksperymentalne mozliwosci',
   'settings.about': 'O aplikacji',
   'settings.aboutHint': 'Szczegóły wersji i środowiska uruchomieniowego',
   'settings.appVersion': 'Wersja',

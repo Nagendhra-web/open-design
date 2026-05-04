@@ -31,6 +31,7 @@ import {
 
 export type SettingsSection =
   | 'execution'
+  | 'features'
   | 'media'
   | 'language'
   | 'appearance'
@@ -270,6 +271,17 @@ export function SettingsDialog({
               <span>
                 <strong>{t('settings.envConfigure')}</strong>
                 <small>{t('settings.codeAgent')}</small>
+              </span>
+            </button>
+            <button
+              type="button"
+              className={`settings-nav-item${activeSection === 'features' ? ' active' : ''}`}
+              onClick={() => setActiveSection('features')}
+            >
+              <Icon name="sparkles" size={18} />
+              <span>
+                <strong>{t('settings.features')}</strong>
+                <small>{t('settings.featuresHint')}</small>
               </span>
             </button>
             <button
@@ -662,6 +674,10 @@ export function SettingsDialog({
             </>
           ) : null}
 
+          {activeSection === 'features' ? (
+            <FeaturesSection cfg={cfg} setCfg={setCfg} />
+          ) : null}
+
           {activeSection === 'media' ? <MediaProvidersSection cfg={cfg} setCfg={setCfg} /> : null}
 
           {activeSection === 'language' ? (
@@ -813,6 +829,55 @@ export function SettingsDialog({
         </footer>
       </div>
     </div>
+  );
+}
+
+function FeaturesSection({
+  cfg,
+  setCfg,
+}: {
+  cfg: AppConfig;
+  setCfg: Dispatch<SetStateAction<AppConfig>>;
+}) {
+  const { t } = useI18n();
+  const enabled = cfg.critiqueTheaterEnabled ?? false;
+
+  return (
+    <section className="settings-section">
+      <div className="section-head">
+        <div>
+          <h3>{t('settings.features')}</h3>
+          <p className="hint">{t('settings.featuresHint')}</p>
+        </div>
+      </div>
+      <div className="settings-subsection">
+        <div className="section-head">
+          <div>
+            <h4>{t('critiqueTheater.userFacingName')} (beta)</h4>
+            <p className="hint">{t('critiqueTheater.settingsRowDescription')}</p>
+          </div>
+        </div>
+        <div
+          className="seg-control"
+          role="group"
+          aria-label={t('critiqueTheater.userFacingName')}
+          style={{ '--seg-cols': 1 } as React.CSSProperties}
+        >
+          <button
+            type="button"
+            className={'seg-btn' + (enabled ? ' active' : '')}
+            aria-pressed={enabled}
+            onClick={() =>
+              setCfg((c) => ({ ...c, critiqueTheaterEnabled: !enabled }))
+            }
+          >
+            <span className="seg-title">
+              {enabled ? t('common.active') : t('common.offline')}
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 

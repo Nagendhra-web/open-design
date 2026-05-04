@@ -108,6 +108,8 @@ export const en: Dict = {
   'settings.mediaProviderClear': 'Clear',
   'settings.mediaProviderPlaceholder': 'Paste API key',
   'settings.mediaProviderBaseUrlPlaceholder': 'Override default base URL',
+  'settings.features': 'Features',
+  'settings.featuresHint': 'Experimental capabilities',
   'settings.about': 'About',
   'settings.aboutHint': 'Version and runtime details',
   'settings.appVersion': 'Version',

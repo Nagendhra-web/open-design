@@ -108,6 +108,8 @@ export const ar: Dict = {
   'settings.mediaProviderClear': 'مسح',
   'settings.mediaProviderPlaceholder': 'الصق مفتاح API',
   'settings.mediaProviderBaseUrlPlaceholder': 'تجاوز رابط القاعدة الافتراضي',
+  'settings.features': 'الميزات',
+  'settings.featuresHint': 'قدرات تجريبية',
   'settings.about': 'حول',
   'settings.aboutHint': 'تفاصيل النسخة ووقت التشغيل',
   'settings.appVersion': 'النسخة',

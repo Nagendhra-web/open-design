@@ -108,6 +108,8 @@ export const esES: Dict = {
   'settings.mediaProviderClear': 'Limpiar',
   'settings.mediaProviderPlaceholder': 'Pega la clave de API',
   'settings.mediaProviderBaseUrlPlaceholder': 'Sobrescribir URL base por defecto',
+  'settings.features': 'Funciones',
+  'settings.featuresHint': 'Capacidades experimentales',
   'settings.about': 'Acerca de',
   'settings.aboutHint': 'Versión y detalles de ejecución',
   'settings.appVersion': 'Versión',

@@ -108,6 +108,8 @@ export const fa: Dict = {
   'settings.mediaProviderClear': 'پاک کردن',
   'settings.mediaProviderPlaceholder': 'کلید API را وارد کنید',
   'settings.mediaProviderBaseUrlPlaceholder': 'بازنویسی آدرس پایه پیش‌فرض',
+  'settings.features': 'ویژگی‌ها',
+  'settings.featuresHint': 'قابلیت‌های آزمایشی',
   'settings.about': 'درباره',
   'settings.aboutHint': 'جزئیات نسخه و اجرا',
   'settings.appVersion': 'نسخه',

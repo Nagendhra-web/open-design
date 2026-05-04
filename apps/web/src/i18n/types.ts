@@ -127,6 +127,8 @@ export interface Dict {
   'settings.mediaProviderClear': string;
   'settings.mediaProviderPlaceholder': string;
   'settings.mediaProviderBaseUrlPlaceholder': string;
+  'settings.features': string;
+  'settings.featuresHint': string;
   'settings.about': string;
   'settings.aboutHint': string;
   'settings.appVersion': string;

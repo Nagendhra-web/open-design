@@ -108,6 +108,8 @@ export const hu: Dict = {
   'settings.mediaProviderClear': 'Törlés',
   'settings.mediaProviderPlaceholder': 'API-kulcs beillesztése',
   'settings.mediaProviderBaseUrlPlaceholder': 'Alapértelmezett bázis URL felülírása',
+  'settings.features': 'Funkciók',
+  'settings.featuresHint': 'Kísérleti képességek',
   'settings.about': 'Névjegy',
   'settings.aboutHint': 'Verzió- és futtatókörnyezeti adatok',
   'settings.appVersion': 'Verzió',

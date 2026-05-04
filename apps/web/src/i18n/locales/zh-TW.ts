@@ -106,6 +106,8 @@ export const zhTW: Dict = {
   'settings.mediaProviderClear': '清除',
   'settings.mediaProviderPlaceholder': '貼上 API key',
   'settings.mediaProviderBaseUrlPlaceholder': '覆蓋預設 Base URL',
+  'settings.features': '功能',
+  'settings.featuresHint': '實驗性功能',
   'settings.about': '關於',
   'settings.aboutHint': '版本與執行環境詳情',
   'settings.appVersion': '版本',

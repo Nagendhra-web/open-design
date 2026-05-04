@@ -108,6 +108,8 @@ export const tr: Dict = {
   'settings.mediaProviderClear': 'Temizle',
   'settings.mediaProviderPlaceholder': 'API anahtarı yapıştır',
   'settings.mediaProviderBaseUrlPlaceholder': 'Varsayılan temel URL’yi görmezden gel',
+  'settings.features': 'Özellikler',
+  'settings.featuresHint': 'Deneysel yetenekler',
   'settings.about': 'Hakkında',
   'settings.aboutHint': 'Sürüm ve çalışma zamanı detayları',
   'settings.appVersion': 'Sürüm',

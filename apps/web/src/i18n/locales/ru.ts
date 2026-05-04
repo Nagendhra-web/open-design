@@ -107,6 +107,8 @@ export const ru: Dict = {
   'settings.mediaProviderClear': 'Очистить',
   'settings.mediaProviderPlaceholder': 'Вставьте API key',
   'settings.mediaProviderBaseUrlPlaceholder': 'Переопределить Base URL',
+  'settings.features': 'Функции',
+  'settings.featuresHint': 'Экспериментальные возможности',
   'settings.about': 'О приложении',
   'settings.aboutHint': 'Версия и сведения о запуске',
   'settings.appVersion': 'Версия',

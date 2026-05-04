@@ -107,6 +107,8 @@ export const ptBR: Dict = {
   'settings.mediaProviderClear': 'Limpar',
   'settings.mediaProviderPlaceholder': 'Cole a API key',
   'settings.mediaProviderBaseUrlPlaceholder': 'Sobrescrever Base URL padrão',
+  'settings.features': 'Funcionalidades',
+  'settings.featuresHint': 'Capacidades experimentais',
   'settings.about': 'Sobre',
   'settings.aboutHint': 'Versão e detalhes de execução',
   'settings.appVersion': 'Versão',
