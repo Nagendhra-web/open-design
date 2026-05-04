@@ -137,7 +137,7 @@ function RunningStage({
   };
 
   return (
-    <div className={`${css.theaterRoot} ${css.stageRoot}`}>
+    <div className={`${css.theaterRoot} ${css.stageRoot}`} data-testid="critique-theater-stage">
       {/* Offscreen aria-live for round_end and ship announcements */}
       <div className={css.srOnly} aria-live="polite" aria-atomic="true">
         {announcement}

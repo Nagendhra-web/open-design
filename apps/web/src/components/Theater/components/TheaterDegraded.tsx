@@ -34,6 +34,7 @@ export function TheaterDegraded({
   return (
     <div
       className={`${css.theaterRoot} ${css.degradedRoot}`}
+      data-testid="critique-theater-degraded"
       role="alert"
       aria-live="assertive"
     >

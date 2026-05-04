@@ -56,6 +56,7 @@ export function TheaterCollapsed({
     <button
       type="button"
       className={`${css.theaterRoot} ${css.collapsedBadge}`}
+      data-testid="critique-theater-badge"
       onClick={onExpand}
       aria-label={`${t(CT.userFacingName)}: ${t(CT.shippedScore)} ${composite.toFixed(1)} / ${scale}. ${t(CT.replayTitle)}`}
     >

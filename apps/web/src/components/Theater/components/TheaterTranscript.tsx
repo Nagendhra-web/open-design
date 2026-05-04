@@ -68,7 +68,7 @@ export function TheaterTranscript({
   const done = !isReplaying && progress >= 1;
 
   return (
-    <div className={`${css.theaterRoot} ${css.transcriptRoot}`} aria-label={t(CT.replayTitle)}>
+    <div className={`${css.theaterRoot} ${css.transcriptRoot}`} data-testid="critique-theater-transcript" aria-label={t(CT.replayTitle)}>
       <div className={css.transcriptHead}>
         <span className={css.transcriptTitle}>{t(CT.replayTitle)}</span>
         <span className={css.transcriptBadge}>{t(CT.replayReadOnly)}</span>

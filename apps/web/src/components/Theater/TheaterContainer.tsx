@@ -202,10 +202,12 @@ export function TheaterContainer({
   }
 
   return (
-    <TheaterContainerInner
-      projectId={projectId}
-      onInterrupt={onInterrupt}
-      onRerun={onRerun}
-    />
+    <div data-testid="critique-theater">
+      <TheaterContainerInner
+        projectId={projectId}
+        onInterrupt={onInterrupt}
+        onRerun={onRerun}
+      />
+    </div>
   );
 }
