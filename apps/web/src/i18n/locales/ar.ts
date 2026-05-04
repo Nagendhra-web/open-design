@@ -849,4 +849,6 @@ export const ar: Dict = {
   'critiqueTheater.panelist.brand': 'علامة تجارية',
   'critiqueTheater.panelist.a11y': 'إمكانية الوصول',
   'critiqueTheater.panelist.copy': 'نص',
+  'critiqueTheater.noRunYet': 'لا يوجد تشغيل بعد',
+  'critiqueTheater.settingsRowDescription': 'كل قطعة تخضع لتقييم اللجنة وتسجيل النقاط وإعادة التشغيل. يضيف 1-2 دقيقة لوقت الانشاء.',
 };

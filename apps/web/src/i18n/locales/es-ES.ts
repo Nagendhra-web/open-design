@@ -850,4 +850,6 @@ export const esES: Dict = {
   'critiqueTheater.panelist.brand': 'Marca',
   'critiqueTheater.panelist.a11y': 'Accesibilidad',
   'critiqueTheater.panelist.copy': 'Redaccion',
+  'critiqueTheater.noRunYet': 'Sin ejecucion todavia',
+  'critiqueTheater.settingsRowDescription': 'Cada artefacto es evaluado por el panel, puntuado y reproducible. Agrega 1-2 minutos al tiempo de generacion.',
 };

@@ -848,4 +848,6 @@ export const ptBR: Dict = {
   'critiqueTheater.panelist.brand': 'Marca',
   'critiqueTheater.panelist.a11y': 'Acessibilidade',
   'critiqueTheater.panelist.copy': 'Redação',
+  'critiqueTheater.noRunYet': 'Nenhuma execucao ainda',
+  'critiqueTheater.settingsRowDescription': 'Cada artefato e avaliado pelo painel, pontuado e reproduzivel. Adiciona 1-2 minutos ao tempo de geracao.',
 };

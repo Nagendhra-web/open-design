@@ -831,4 +831,6 @@ export const zhCN: Dict = {
   'critiqueTheater.panelist.brand': '品牌',
   'critiqueTheater.panelist.a11y': '无障碍',
   'critiqueTheater.panelist.copy': '文案',
+  'critiqueTheater.noRunYet': '暂无运行',
+  'critiqueTheater.settingsRowDescription': '每个产物都经过评审团评分并可回放。生成时间增加1-2分钟。',
 };

@@ -874,4 +874,6 @@ export interface Dict {
   'critiqueTheater.panelist.brand': string;
   'critiqueTheater.panelist.a11y': string;
   'critiqueTheater.panelist.copy': string;
+  'critiqueTheater.noRunYet': string;
+  'critiqueTheater.settingsRowDescription': string;
 }

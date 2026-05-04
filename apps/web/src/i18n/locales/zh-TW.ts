@@ -831,4 +831,6 @@ export const zhTW: Dict = {
   'critiqueTheater.panelist.brand': '品牌',
   'critiqueTheater.panelist.a11y': '無障礙',
   'critiqueTheater.panelist.copy': '文案',
+  'critiqueTheater.noRunYet': '尚無運行',
+  'critiqueTheater.settingsRowDescription': '每個成品都經過評審團評分並可回放。生成時間增加1-2分鐘。',
 };

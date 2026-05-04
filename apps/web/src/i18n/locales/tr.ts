@@ -848,4 +848,6 @@ export const tr: Dict = {
   'critiqueTheater.panelist.brand': 'Marka',
   'critiqueTheater.panelist.a11y': 'Erişilebilirlik',
   'critiqueTheater.panelist.copy': 'Metin',
+  'critiqueTheater.noRunYet': 'Henuz calisma yok',
+  'critiqueTheater.settingsRowDescription': 'Her eser panel degerlendirmesinden gecer, puanlanir ve tekrar oynatilabilir. Uretim süresine 1-2 dakika ekler.',
 };

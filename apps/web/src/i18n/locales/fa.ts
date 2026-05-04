@@ -850,4 +850,6 @@ export const fa: Dict = {
   'critiqueTheater.panelist.brand': 'برند',
   'critiqueTheater.panelist.a11y': 'دسترسی‌پذیری',
   'critiqueTheater.panelist.copy': 'متن',
+  'critiqueTheater.noRunYet': 'هنوز اجرایی نشده',
+  'critiqueTheater.settingsRowDescription': 'هر قطعه توسط پنل ارزیابی، امتیازدهی و قابل پخش مجدد است. 1-2 دقیقه به زمان تولید اضافه می‌کند.',
 };

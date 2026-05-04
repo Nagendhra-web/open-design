@@ -40,3 +40,4 @@ export { TheaterCollapsed, type TheaterCollapsedProps } from './components/Theat
 export { TheaterTranscript, type TheaterTranscriptProps } from './components/TheaterTranscript.js';
 export { TheaterDegraded, type TheaterDegradedProps } from './components/TheaterDegraded.js';
 export { InterruptButton, type InterruptButtonProps } from './components/InterruptButton.js';
+export { TheaterContainer, type TheaterContainerProps } from './TheaterContainer.js';

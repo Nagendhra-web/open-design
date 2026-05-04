@@ -849,4 +849,6 @@ export const en: Dict = {
   'critiqueTheater.panelist.brand': 'Brand',
   'critiqueTheater.panelist.a11y': 'A11y',
   'critiqueTheater.panelist.copy': 'Copy',
+  'critiqueTheater.noRunYet': 'No run yet',
+  'critiqueTheater.settingsRowDescription': 'Every artifact is panel-tempered, scored, and replayable. Adds 1-2 minutes to generation time.',
 };

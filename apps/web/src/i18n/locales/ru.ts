@@ -848,4 +848,6 @@ export const ru: Dict = {
   'critiqueTheater.panelist.brand': 'Бренд',
   'critiqueTheater.panelist.a11y': 'Доступность',
   'critiqueTheater.panelist.copy': 'Копирайтинг',
+  'critiqueTheater.noRunYet': 'Запусков еще не было',
+  'critiqueTheater.settingsRowDescription': 'Каждый артефакт проходит оценку жюри, набирает баллы и доступен для повтора. Добавляет 1-2 минуты к генерации.',
 };

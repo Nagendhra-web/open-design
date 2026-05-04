@@ -849,4 +849,6 @@ export const pl: Dict = {
   'critiqueTheater.panelist.brand': 'Marka',
   'critiqueTheater.panelist.a11y': 'Dostepnosc',
   'critiqueTheater.panelist.copy': 'Copywriting',
+  'critiqueTheater.noRunYet': 'Brak uruchomienia',
+  'critiqueTheater.settingsRowDescription': 'Kazdy artefakt jest oceniany przez panel, punktowany i mozliwy do odtworzenia. Dodaje 1-2 minuty do czasu generowania.',
 };

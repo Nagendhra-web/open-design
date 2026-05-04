@@ -849,4 +849,6 @@ export const ko: Dict = {
   'critiqueTheater.panelist.brand': '브랜드',
   'critiqueTheater.panelist.a11y': '접근성',
   'critiqueTheater.panelist.copy': '카피',
+  'critiqueTheater.noRunYet': '아직 실행 없음',
+  'critiqueTheater.settingsRowDescription': '모든 아티팩트는 패널 심사, 채점, 재생이 가능합니다. 생성 시간이 1-2분 추가됩니다.',
 };

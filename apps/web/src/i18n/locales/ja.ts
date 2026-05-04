@@ -848,4 +848,6 @@ export const ja: Dict = {
   'critiqueTheater.panelist.brand': 'ブランド',
   'critiqueTheater.panelist.a11y': 'アクセシビリティ',
   'critiqueTheater.panelist.copy': 'コピー',
+  'critiqueTheater.noRunYet': 'まだ実行がありません',
+  'critiqueTheater.settingsRowDescription': 'すべての成果物はパネル審査、採点、再生可能です。生成時間が1〜2分増加します。',
 };

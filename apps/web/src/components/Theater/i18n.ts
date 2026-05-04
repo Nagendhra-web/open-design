@@ -45,6 +45,8 @@ export const CT = {
   panelistBrand:         'critiqueTheater.panelist.brand',
   panelistA11y:          'critiqueTheater.panelist.a11y',
   panelistCopy:          'critiqueTheater.panelist.copy',
+  noRunYet:              'critiqueTheater.noRunYet',
+  settingsRowDescription: 'critiqueTheater.settingsRowDescription',
 } as const;
 
 export type CritiqueTheaterKey = (typeof CT)[keyof typeof CT];

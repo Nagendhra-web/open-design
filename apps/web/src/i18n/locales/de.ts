@@ -849,4 +849,6 @@ export const de: Dict = {
   'critiqueTheater.panelist.brand': 'Marke',
   'critiqueTheater.panelist.a11y': 'Barrierefreiheit',
   'critiqueTheater.panelist.copy': 'Text',
+  'critiqueTheater.noRunYet': 'Noch kein Durchlauf',
+  'critiqueTheater.settingsRowDescription': 'Jedes Artefakt wird panel-geprueft, bewertet und ist wiedergebbar. Erhoehte Generierungszeit um 1-2 Minuten.',
 };

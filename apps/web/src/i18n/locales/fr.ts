@@ -849,4 +849,6 @@ export const fr: Dict = {
   'critiqueTheater.panelist.brand': 'Marque',
   'critiqueTheater.panelist.a11y': 'Accessibilite',
   'critiqueTheater.panelist.copy': 'Redaction',
+  'critiqueTheater.noRunYet': "Aucune execution pour l'instant",
+  'critiqueTheater.settingsRowDescription': 'Chaque artefact est evalue par le panel, note et rejouable. Ajoute 1-2 minutes au temps de generation.',
 };

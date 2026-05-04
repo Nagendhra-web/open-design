@@ -859,4 +859,6 @@ export const hu: Dict = {
   'critiqueTheater.panelist.brand': 'Márka',
   'critiqueTheater.panelist.a11y': 'Akadálymentesség',
   'critiqueTheater.panelist.copy': 'Szöveg',
+  'critiqueTheater.noRunYet': 'Meg nincs futtatás',
+  'critiqueTheater.settingsRowDescription': 'Minden termék panel-ellenorzésen, pontozáson esik át és visszajátszható. 1-2 perccel növeli a generálási idt.',
 };
