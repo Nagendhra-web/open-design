@@ -836,4 +836,42 @@ export interface Dict {
   'sketch.clear': string;
   'sketch.close': string;
   'sketch.textPrompt': string;
+
+  // Critique Theater (Design Jury)
+  'critiqueTheater.userFacingName': string;
+  'critiqueTheater.roundLabel': string;
+  'critiqueTheater.ruleLineRunning': string;
+  'critiqueTheater.ruleLineShipped': string;
+  'critiqueTheater.ruleLineInterrupted': string;
+  'critiqueTheater.density.active': string;
+  'critiqueTheater.density.smart': string;
+  'critiqueTheater.density.expanded': string;
+  'critiqueTheater.interrupt': string;
+  'critiqueTheater.interrupting': string;
+  'critiqueTheater.interruptConfirmTitle': string;
+  'critiqueTheater.interruptConfirmBody': string;
+  'critiqueTheater.interruptConfirmYes': string;
+  'critiqueTheater.interruptConfirmNo': string;
+  'critiqueTheater.replay.title': string;
+  'critiqueTheater.replay.readOnly': string;
+  'critiqueTheater.replay.speeds.1x': string;
+  'critiqueTheater.replay.speeds.4x': string;
+  'critiqueTheater.replay.speeds.instant': string;
+  'critiqueTheater.degraded.title': string;
+  'critiqueTheater.degraded.retry': string;
+  'critiqueTheater.degraded.switchAdapter': string;
+  'critiqueTheater.degraded.readLog': string;
+  'critiqueTheater.shipped.score': string;
+  'critiqueTheater.shipped.dimsLegend': string;
+  'critiqueTheater.shipped.export': string;
+  'critiqueTheater.shipped.rerun': string;
+  'critiqueTheater.interrupted.title': string;
+  'critiqueTheater.interrupted.resume': string;
+  'critiqueTheater.interrupted.shipAsIs': string;
+  'critiqueTheater.interrupted.reBrief': string;
+  'critiqueTheater.panelist.designer': string;
+  'critiqueTheater.panelist.critic': string;
+  'critiqueTheater.panelist.brand': string;
+  'critiqueTheater.panelist.a11y': string;
+  'critiqueTheater.panelist.copy': string;
 }
