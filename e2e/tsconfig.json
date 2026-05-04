@@ -22,7 +22,9 @@
     "vitest.config.ts",
     "cases/report-metadata.ts",
     "reporters/**/*.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "helpers/**/*.ts",
+    "specs/**/*.ts"
   ],
-  "exclude": ["node_modules", "reports", ".od-data"]
+  "exclude": ["node_modules", "reports", ".od-data", "specs/app.spec.ts"]
 }
