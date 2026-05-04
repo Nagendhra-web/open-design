@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"pnpm --filter @open-design/daemon test critique-conformance 2>&1\",\"timeout\":180000,\"description\":\"Run conformance tests after fixes\"}",
+  "error": "Exit code 1\n\n> @open-design/daemon@0.3.0 test C:\\Users\\ekada\\OneDrive\\Desktop\\Githubcontributing\\open-design\\apps\\daemon\n> vitest run -c vitest.config.ts \"critique-conformance\"\n\n\n\u001b[1m\u001b[7m\u001b[36m RUN \u001b[39m\u001b[27m\u001b[22m \u001b[36mv2.1.9 \u001b[39m\u001b[90mC:/Users/ekada/OneDrive/Desktop/Githubcontributing/open-design/apps/daemon\u001b[39m\n\n \u001b[32m✓\u001b[39m tests/critique-conformance-registry.test.ts \u001b[2m(\u001b[22m\u001b[2m19 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[90m 10\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/critique-conformance-matrix.test.ts \u001b[2m(\u001b[22m...",
+  "timestamp": "2026-05-04T03:49:50.072Z",
+  "retry_count": 1
+}
