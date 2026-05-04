@@ -1,0 +1,548 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1777853378623,
+  "projectRoot": "C:\\Users\\ekada\\OneDrive\\Desktop\\Githubcontributing\\open-design",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": "~24",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "pnpm",
+    "runtime": "Node.js 24"
+  },
+  "build": {
+    "buildCommand": "pnpm build",
+    "testCommand": "pnpm test",
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {
+      "postinstall": "node ./scripts/postinstall.mjs",
+      "tools-dev": "pnpm exec tools-dev",
+      "tools-pack": "pnpm exec tools-pack",
+      "build": "pnpm --filter @open-design/web build",
+      "check:residual-js": "node --experimental-strip-types scripts/check-residual-js.ts",
+      "sync:community-pets": "node --experimental-strip-types scripts/sync-community-pets.ts",
+      "bake:community-pets": "node --experimental-strip-types scripts/bake-community-pets.ts",
+      "test:e2e:live": "pnpm --filter @open-design/e2e test:e2e:live",
+      "test": "pnpm -r --workspace-concurrency=1 --if-present run test",
+      "test:ui:clean": "pnpm --filter @open-design/e2e test:ui:clean",
+      "test:ui": "pnpm --filter @open-design/e2e test:ui",
+      "test:ui:headed": "pnpm --filter @open-design/e2e test:ui:headed",
+      "typecheck": "pnpm -r --workspace-concurrency=1 --if-present run typecheck && pnpm --filter @open-design/daemon build && pnpm check:residual-js"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": true,
+    "workspaces": [],
+    "mainDirectories": [
+      "assets",
+      "docs",
+      "scripts"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "apps": {
+      "path": "apps",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1777853378588,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
+    },
+    "assets": {
+      "path": "assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1777853378589,
+      "keyFiles": []
+    },
+    "craft": {
+      "path": "craft",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1777853378600,
+      "keyFiles": [
+        "anti-ai-slop.md",
+        "color.md",
+        "README.md",
+        "typography.md"
+      ]
+    },
+    "design-systems": {
+      "path": "design-systems",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1777853378601,
+      "keyFiles": [
+        "README.md"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 8,
+      "lastAccessed": 1777853378602,
+      "keyFiles": [
+        "agent-adapters.md",
+        "architecture.md",
+        "codex-pets.md",
+        "modes.md",
+        "references.md"
+      ]
+    },
+    "e2e": {
+      "path": "e2e",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1777853378602,
+      "keyFiles": [
+        "package.json",
+        "playwright.config.ts",
+        "tsconfig.json",
+        "vitest.config.ts"
+      ]
+    },
+    "packages": {
+      "path": "packages",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1777853378603,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
+    },
+    "prompt-templates": {
+      "path": "prompt-templates",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1777853378603,
+      "keyFiles": []
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 14,
+      "lastAccessed": 1777853378604,
+      "keyFiles": [
+        "bake-community-pets.ts",
+        "bake-html-ppt-examples.mjs",
+        "check-residual-js.ts",
+        "import-prompt-templates.mjs",
+        "postinstall.mjs"
+      ]
+    },
+    "skills": {
+      "path": "skills",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1777853378604,
+      "keyFiles": []
+    },
+    "specs": {
+      "path": "specs",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1777853378605,
+      "keyFiles": []
+    },
+    "story": {
+      "path": "story",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1777853378605,
+      "keyFiles": [
+        "STORY.md",
+        "STORY.zh-CN.md"
+      ]
+    },
+    "templates": {
+      "path": "templates",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1777853378605,
+      "keyFiles": [
+        "deck-framework.html",
+        "kami-deck.html"
+      ]
+    },
+    "tools": {
+      "path": "tools",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1777853378606,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
+    },
+    "docs\\assets": {
+      "path": "docs\\assets",
+      "purpose": "Static assets",
+      "fileCount": 7,
+      "lastAccessed": 1777853378608,
+      "keyFiles": [
+        "banner.png",
+        "banner.svg",
+        "design-systems-library.png"
+      ]
+    },
+    "docs\\examples": {
+      "path": "docs\\examples",
+      "purpose": "Example code",
+      "fileCount": 1,
+      "lastAccessed": 1777853378608,
+      "keyFiles": [
+        "DESIGN.sample.md"
+      ]
+    },
+    "e2e\\node_modules": {
+      "path": "e2e\\node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 0,
+      "lastAccessed": 1777853378609,
+      "keyFiles": []
+    },
+    "e2e\\scripts": {
+      "path": "e2e\\scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 2,
+      "lastAccessed": 1777853378609,
+      "keyFiles": [
+        "reset-artifacts.ts",
+        "runtime-adapter.e2e.live.test.ts"
+      ]
+    },
+    "e2e\\tests": {
+      "path": "e2e\\tests",
+      "purpose": "Test files",
+      "fileCount": 5,
+      "lastAccessed": 1777853378610,
+      "keyFiles": [
+        "assistant-message.test.tsx",
+        "conversation-timestamps.test.tsx",
+        "preview-modal-fullscreen.test.tsx"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "apps\\daemon\\src\\server.ts",
+      "accessCount": 23,
+      "lastAccessed": 1777934325764,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\SettingsDialog.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1777865774585,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\en.ts",
+      "accessCount": 7,
+      "lastAccessed": 1777865798170,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\types.ts",
+      "accessCount": 7,
+      "lastAccessed": 1777865799367,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\ru.ts",
+      "accessCount": 6,
+      "lastAccessed": 1777893188630,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\ProjectView.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1777866923297,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\TheaterContainer.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1777867086522,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\TheaterStage.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1777867094630,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\TheaterTranscript.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1777867113575,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\ScoreTicker.test.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1777853537924,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\types.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865634965,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\de.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865838582,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\ar.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865841098,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\es-ES.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865842329,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\fa.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865843741,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\fr.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865845346,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\hu.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865847566,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\ja.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865848798,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\ko.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865873446,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\pl.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865875052,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\pt-BR.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865876833,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\tr.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865879595,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\zh-CN.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865880810,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\i18n\\locales\\zh-TW.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777865882246,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\state\\reducer.ts",
+      "accessCount": 4,
+      "lastAccessed": 1777866876760,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\TheaterCollapsed.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1777867102968,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\TheaterDegraded.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1777867108266,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\TheaterStage.test.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1777864917656,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\i18n.ts",
+      "accessCount": 3,
+      "lastAccessed": 1777865371640,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\index.ts",
+      "accessCount": 3,
+      "lastAccessed": 1777865404160,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\__tests__\\TheaterContainer.test.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1777865525561,
+      "type": "file"
+    },
+    {
+      "path": "apps\\daemon\\src\\critique\\parser.ts",
+      "accessCount": 3,
+      "lastAccessed": 1777932714015,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\ScoreTicker.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853393159,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\InterruptButton.test.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853495374,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\PanelistLane.test.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853503363,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\TheaterCollapsed.test.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853509867,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\TheaterDegraded.test.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853516037,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\components\\__tests__\\TheaterTranscript.test.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1777853528620,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\hooks\\useCritiqueStream.ts",
+      "accessCount": 2,
+      "lastAccessed": 1777865171054,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\state\\selectors.ts",
+      "accessCount": 2,
+      "lastAccessed": 1777865378410,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\hooks\\useCritiqueWiring.ts",
+      "accessCount": 2,
+      "lastAccessed": 1777865934484,
+      "type": "file"
+    },
+    {
+      "path": "apps\\daemon\\src\\critique\\__fixtures__\\v1\\happy-3-rounds.txt",
+      "accessCount": 2,
+      "lastAccessed": 1777932775886,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web",
+      "accessCount": 1,
+      "lastAccessed": 1777853488516,
+      "type": "directory"
+    },
+    {
+      "path": "apps\\web\\src\\components\\SettingsDialog.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1777864923616,
+      "type": "file"
+    },
+    {
+      "path": "apps\\daemon\\src\\critique\\config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1777864924463,
+      "type": "file"
+    },
+    {
+      "path": "apps\\daemon\\src\\app-config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1777864931849,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\hooks\\__tests__\\useCritiqueStream.test.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1777865211416,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\providers\\registry.ts",
+      "accessCount": 1,
+      "lastAccessed": 1777865603242,
+      "type": "file"
+    },
+    {
+      "path": "apps\\web\\src\\components\\Theater\\hooks\\__tests__\\useCritiqueWiring.test.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1777865685752,
+      "type": "file"
+    },
+    {
+      "path": "apps\\daemon\\src\\critique\\scoreboard.ts",
+      "accessCount": 1,
+      "lastAccessed": 1777866157402,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
