@@ -190,7 +190,7 @@ describe('spawn wiring - stream format gating (Defect 1)', () => {
     it(`format="${fmt}" skips the orchestrator (no run row inserted)`, async () => {
       // Simulate the server branch: if streamFormat !== 'plain', skip orchestrator.
       const cfg = loadCritiqueConfigFromEnv({ OD_CRITIQUE_ENABLED: '1' });
-      const adapterStreamFormat = fmt;
+      const adapterStreamFormat: string = fmt;
 
       if (cfg.enabled && adapterStreamFormat !== 'plain') {
         // Legacy path: orchestrator NOT called.
