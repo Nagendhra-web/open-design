@@ -173,6 +173,10 @@ export interface AppConfig {
   // configs that pre-date the feature land at `undefined`, which the loader
   // normalizes to a safe default (everything off).
   notifications?: NotificationsConfig;
+  // Critique Theater (Design Jury) feature flag. When true, every artifact
+  // generation is routed through the panel-tempered orchestrator. Older
+  // configs that pre-date the feature land at `undefined`, equivalent to false.
+  critiqueTheaterEnabled?: boolean;
 }
 
 export type AgentEvent = PersistedAgentEvent;

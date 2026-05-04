@@ -65,6 +65,8 @@ import { AppChromeHeader } from './AppChromeHeader';
 import { AvatarMenu } from './AvatarMenu';
 import { ChatPane } from './ChatPane';
 import { FileWorkspace } from './FileWorkspace';
+import { TheaterContainer } from './Theater/TheaterContainer';
+import { useCritiqueWiring } from './Theater/hooks/useCritiqueWiring';
 
 interface Props {
   project: Project;
@@ -117,6 +119,7 @@ export function ProjectView({
   onProjectsRefresh,
 }: Props) {
   const t = useT();
+  const critiqueWiring = useCritiqueWiring(project.id, config);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(
     null,
@@ -1411,6 +1414,12 @@ export function ProjectView({
           previewComments={previewComments}
           onSavePreviewComment={savePreviewComment}
           onRemovePreviewComment={removePreviewComment}
+        />
+        <TheaterContainer
+          projectId={project.id}
+          enabled={critiqueWiring.enabled}
+          onInterrupt={critiqueWiring.onInterrupt}
+          onRerun={critiqueWiring.onRerun}
         />
       </div>
     </div>
