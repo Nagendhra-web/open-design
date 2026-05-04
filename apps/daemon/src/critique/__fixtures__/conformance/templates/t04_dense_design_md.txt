@@ -1,0 +1,32 @@
+# Design Brief: Settings Panel Redesign
+
+## Background
+The current settings panel (`/settings`) uses a flat list of toggle rows.
+User research shows 62% of users cannot locate the notification settings
+without assistance. The panel has grown to 47 individual settings items.
+
+## Goals
+- Reduce time-to-find for notification settings from 28s (median) to under 8s.
+- Group settings into five logical sections with sticky section headers.
+- Provide in-context help text (max 60 chars) for each setting row.
+
+## Constraints
+| Constraint | Value |
+|---|---|
+| Max panel width | 640px |
+| Min tap target | 44x44px |
+| Color palette | existing design tokens only |
+| Animation budget | 150ms max |
+
+## Sections (in order)
+1. **Account** - email, password, two-factor, sessions
+2. **Notifications** - email digests, in-app, push, webhooks
+3. **Appearance** - theme, density, font size
+4. **Integrations** - connected apps list
+5. **Advanced** - developer mode, data export, account deletion
+
+## Deliverable
+A single-screen HTML/CSS prototype of the settings panel with all five
+sections visible in a scrollable container, sticky section headers, and
+at least the Notifications section fully interactive (toggle states preserved
+across section switches via JS).

@@ -1,0 +1,14 @@
+Design an email header for a co-branded partnership announcement.
+
+Brand A (Acme Corp): primary color #e63 (orange), wordmark "ACME" in bold sans-serif.
+Brand B (NovaTech): primary color #1a6cf5 (blue), wordmark "NovaTech" in light weight italic.
+
+The two brands have conflicting visual identities. The header must give both brands
+equal visual weight while preventing the orange and blue from clashing.
+The partnership tagline is: "Acme and NovaTech: Better Together."
+
+Constraints:
+- Neither brand's primary color may be used at full saturation as a background.
+- Both wordmarks must be legible at the sizes they appear.
+- The header must work in both light mode and dark mode email clients.
+- Width: 600px fixed for email client compatibility.

@@ -1,0 +1,22 @@
+Design a comprehensive dashboard layout for an enterprise analytics platform.
+
+The dashboard must include the following sections:
+1. Top navigation bar with logo, search, notifications, and user avatar.
+2. Left sidebar with collapsible navigation groups: Overview, Reports, Data Sources, Integrations, Settings, Help.
+3. Main content area with a summary row of four KPI cards (total users, active sessions, revenue, conversion rate).
+4. A full-width area chart showing the last 30 days of activity with hover tooltips.
+5. A two-column lower section: left column shows a data table of recent events (paginated, 10 rows), right column shows a pie chart of traffic sources.
+6. Footer row with last-updated timestamp and data source attribution.
+
+Visual requirements:
+- Use a light theme with a white main background and a #f4f6f9 sidebar.
+- Primary accent color is #2563eb (blue-600).
+- Body text is 14px, labels are 12px, headings are 16px-24px.
+- All interactive elements must have hover and focus states.
+- The layout must be responsive down to 1024px minimum viewport width.
+
+Accessibility requirements:
+- All chart elements must have aria-label attributes.
+- Table must include proper thead/tbody and scope attributes.
+- Focus order must follow visual reading order.
+- Color is not the sole means of conveying information in charts.

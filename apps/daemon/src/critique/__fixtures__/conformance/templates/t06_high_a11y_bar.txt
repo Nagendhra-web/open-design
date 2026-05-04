@@ -1,0 +1,15 @@
+Design an accessible data table component for a government benefits portal.
+
+Accessibility requirements are non-negotiable:
+- WCAG 2.2 AA compliance is the minimum bar; AAA is preferred for text contrast.
+- All interactive controls must be fully keyboard operable.
+- Screen reader announcements must accurately describe sort state, filter state, and pagination.
+- Row selection must use aria-selected; multi-select must use aria-multiselectable on the grid.
+- Column headers must have scope="col" and sort direction communicated via aria-sort.
+- Error states on inline edit cells must use aria-describedby linking to the error message.
+- Focus must not be lost on sort, filter, or pagination interactions.
+- Touch targets minimum 44x44px.
+- No motion unless prefers-reduced-motion: no-preference.
+
+The table displays benefit applications: columns are Application ID, Applicant Name,
+Status, Submitted Date, and Actions (View, Edit, Withdraw).

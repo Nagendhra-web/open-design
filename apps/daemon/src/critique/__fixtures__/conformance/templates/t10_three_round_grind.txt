@@ -1,0 +1,18 @@
+Design a complex multi-step form wizard for a business loan application.
+
+The wizard has six steps: Business Info, Ownership, Financials, Documents, Review, Submit.
+The design must handle all of the following edge cases:
+
+Step validation: each step has inline field-level validation with error messages.
+Progress indicator: a top stepper showing completed, current, and upcoming steps.
+Save and resume: a persistent "Save progress" action that stores state in localStorage.
+File upload in Documents step: drag-and-drop zone with progress bar, preview, and delete.
+Review step: fully rendered read-only summary of all previous step inputs.
+Submit step: animated confirmation with application reference number.
+
+Additional requirements that are expected to require multiple revision rounds:
+- The stepper must be accessible (aria-current="step", keyboard focusable).
+- The file upload must handle rejection of non-PDF files with an error toast.
+- The Review step summary must group fields by their originating step with expand/collapse.
+- All monetary inputs must format as currency on blur (e.g., "1234567" becomes "1,234,567").
+- The form must be fully operable with keyboard only, including the drag-and-drop fallback.

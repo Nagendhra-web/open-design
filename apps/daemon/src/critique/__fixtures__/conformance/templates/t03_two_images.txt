@@ -1,0 +1,14 @@
+Design a product comparison page for two pricing tiers.
+
+Attachments:
+- [IMAGE: screenshot_plan_basic.png] - current Basic plan card design
+- [IMAGE: screenshot_plan_pro.png] - current Pro plan card design
+
+The redesign should address the following issues visible in the attached screenshots:
+- The Basic and Pro cards are visually indistinguishable at a glance.
+- The Pro card does not sufficiently emphasize the recommended tier badge.
+- The feature list checkmarks lack sufficient contrast on the dark Pro card background.
+
+Produce a side-by-side card layout where the Pro plan is visually elevated
+(larger, slightly elevated shadow, distinct background color) while the Basic
+plan remains clean and secondary.

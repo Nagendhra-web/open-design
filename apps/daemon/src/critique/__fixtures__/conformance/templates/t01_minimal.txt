@@ -1,0 +1,3 @@
+Design a simple landing page hero for a B2B SaaS product.
+The hero should have a headline, a subheading, and a primary CTA button.
+Keep it clean and professional.

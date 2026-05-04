@@ -1,0 +1,13 @@
+Design a notification bell dropdown for a project management tool.
+
+The current implementation has the following known issues that must be fixed:
+1. Unread count badge overlaps the bell icon on counts above 9 (shows "9+" but clips).
+2. Dropdown panel has no max-height; 50+ notifications cause the panel to extend off-screen.
+3. Notification items have no hover state, making the target area unclear.
+4. The "Mark all as read" button is below the fold in the dropdown with no sticky positioning.
+5. Timestamps use absolute dates (e.g., "2025-03-14") instead of relative time ("2 days ago").
+6. Unread notifications are not visually distinguished from read ones beyond a blue dot.
+7. The dropdown has no close-on-outside-click behavior described in the markup.
+8. No empty state message when there are zero notifications.
+
+Fix all eight issues and produce the corrected component.

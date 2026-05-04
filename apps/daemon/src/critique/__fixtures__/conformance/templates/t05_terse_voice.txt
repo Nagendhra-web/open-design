@@ -1,0 +1,3 @@
+Mobile checkout flow. Three screens: cart summary, payment input, confirmation.
+Reduce abandonment. Fast. Trust signals visible throughout. No distractions.
+Single primary action per screen. Back navigation clear but not prominent.
