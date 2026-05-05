@@ -170,3 +170,121 @@ describe('orchestrator lifecycle (PR #481 round 3 review)', () => {
     expect(row?.artifactPath).toBeNull();
   });
 });
+
+describe('orchestrator early termination (PR #481 round 5 review)', () => {
+  it('SHIP arrives then stdout stalls: result is shipped, not timed_out', async () => {
+    const { bus, events } = makeBus();
+    const artifactDir = join(tmpDir, 'ship-then-stall');
+
+    async function* validShipThenStall(): AsyncIterable<string> {
+      yield `<CRITIQUE_RUN version="1" maxRounds="3" threshold="8.0" scale="10">
+        <ROUND n="1">
+          <PANELIST role="designer">
+            <NOTES>v1</NOTES>
+            <ARTIFACT mime="text/html"><![CDATA[<html></html>]]></ARTIFACT>
+          </PANELIST>
+          <PANELIST role="critic" score="9.0"><DIM name="h" score="9">ok</DIM></PANELIST>
+          <PANELIST role="brand" score="9.0"><DIM name="v" score="9">ok</DIM></PANELIST>
+          <PANELIST role="a11y" score="9.0"><DIM name="c" score="9">ok</DIM></PANELIST>
+          <PANELIST role="copy" score="9.0"><DIM name="x" score="9">ok</DIM></PANELIST>
+          <ROUND_END n="1" composite="9.0" must_fix="0" decision="ship"><REASON>ok</REASON></ROUND_END>
+        </ROUND>
+        <SHIP round="1" composite="9.0" status="shipped">
+          <ARTIFACT mime="text/html"><![CDATA[<html><body>final</body></html>]]></ARTIFACT>
+          <SUMMARY>Converged.</SUMMARY>
+        </SHIP>
+`;
+      // Stall after the SHIP arrives. Without early termination the
+      // orchestrator would race applyTimeouts(...) until totalTimeoutMs
+      // and persist 'timed_out'.
+      await new Promise(() => { /* never resolves */ });
+    }
+
+    // A short total timeout makes the test fast: if the orchestrator
+    // doesn't break the parser loop on SHIP, the timeout would fire and
+    // the assertions would catch it.
+    const cfg = { ...defaultCritiqueConfig(), totalTimeoutMs: 2_000, perRoundTimeoutMs: 1_500 };
+
+    const result = await runOrchestrator({
+      runId: 'r-ship-stall',
+      projectId: 'p1',
+      conversationId: null,
+      artifactId: 'a1',
+      artifactDir,
+      adapter: 'claude',
+      cfg,
+      db,
+      bus,
+      stdout: validShipThenStall(),
+    });
+
+    expect(result.status).toBe('shipped');
+    expect(result.composite).not.toBeNull();
+    expect(result.composite!).toBeGreaterThan(8.0);
+
+    // Exactly one normalized ship event with status=shipped.
+    const shipEvents = events.filter((e) => e.event === 'critique.ship');
+    expect(shipEvents).toHaveLength(1);
+    const shipPayload = shipEvents[0]?.data as { status: string } | undefined;
+    expect(shipPayload?.status).toBe('shipped');
+  });
+
+  it('maxRounds=1 finalizes after round 1 even when stream tries to open round 2', async () => {
+    const { bus, events } = makeBus();
+    const artifactDir = join(tmpDir, 'max-rounds');
+
+    async function* twoRoundsNoShip(): AsyncIterable<string> {
+      yield `<CRITIQUE_RUN version="1" maxRounds="1" threshold="8.0" scale="10">
+        <ROUND n="1">
+          <PANELIST role="designer">
+            <NOTES>v1</NOTES>
+            <ARTIFACT mime="text/html"><![CDATA[<html></html>]]></ARTIFACT>
+          </PANELIST>
+          <PANELIST role="critic" score="6.0"><DIM name="h" score="6">ok</DIM></PANELIST>
+          <PANELIST role="brand" score="6.0"><DIM name="v" score="6">ok</DIM></PANELIST>
+          <PANELIST role="a11y" score="6.0"><DIM name="c" score="6">ok</DIM></PANELIST>
+          <PANELIST role="copy" score="6.0"><DIM name="x" score="6">ok</DIM></PANELIST>
+          <ROUND_END n="1" composite="6.0" must_fix="0" decision="continue"><REASON>continue</REASON></ROUND_END>
+        </ROUND>
+        <ROUND n="2">
+          <PANELIST role="designer"><NOTES>v2</NOTES><ARTIFACT mime="text/html"><![CDATA[<html></html>]]></ARTIFACT></PANELIST>
+          <PANELIST role="critic" score="9.0"><DIM name="h" score="9">ok</DIM></PANELIST>
+          <PANELIST role="brand" score="9.0"><DIM name="v" score="9">ok</DIM></PANELIST>
+          <PANELIST role="a11y" score="9.0"><DIM name="c" score="9">ok</DIM></PANELIST>
+          <PANELIST role="copy" score="9.0"><DIM name="x" score="9">ok</DIM></PANELIST>
+          <ROUND_END n="2" composite="9.0" must_fix="0" decision="ship"><REASON>ok</REASON></ROUND_END>
+        </ROUND>
+`;
+      // Stall to ensure the orchestrator must break out on the maxRounds
+      // limit, not because the source ended.
+      await new Promise(() => { /* never resolves */ });
+    }
+
+    const cfg = { ...defaultCritiqueConfig(), maxRounds: 1, totalTimeoutMs: 3_000, perRoundTimeoutMs: 2_500 };
+
+    const result = await runOrchestrator({
+      runId: 'r-max-rounds',
+      projectId: 'p1',
+      conversationId: null,
+      artifactId: 'a1',
+      artifactDir,
+      adapter: 'claude',
+      cfg,
+      db,
+      bus,
+      stdout: twoRoundsNoShip(),
+    });
+
+    // Round 1 (composite 6.0) is below threshold and there's no SHIP, so
+    // the no-SHIP fallback path picks the best closed round.
+    expect(result.status).toBe('below_threshold');
+    expect(result.rounds).toHaveLength(1);
+    expect(result.rounds[0]?.n).toBe(1);
+
+    // Synthetic ship from the fallback path; round 2 must NOT appear.
+    const shipEvents = events.filter((e) => e.event === 'critique.ship');
+    expect(shipEvents).toHaveLength(1);
+    const shipPayload = shipEvents[0]?.data as { round: number } | undefined;
+    expect(shipPayload?.round).toBe(1);
+  });
+});
