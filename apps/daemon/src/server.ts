@@ -31,6 +31,8 @@ import { loadCritiqueConfigFromEnv } from './critique/config.js';
 import { reconcileStaleRuns } from './critique/persistence.js';
 import { runOrchestrator } from './critique/orchestrator.js';
 import { createRunRegistry } from './critique/run-registry.js';
+import { critiqueMetrics } from './critique/metrics.js';
+import { critiqueLogger } from './critique/logger.js';
 import { handleCritiqueInterrupt } from './critique/interrupt-handler.js';
 import { handleCritiqueRerun } from './critique/rerun-handler.js';
 import { createCopilotStreamHandler } from './copilot-stream.js';
@@ -725,7 +727,11 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
   // hardcoded constant.
   const reconciledStaleRuns = reconcileStaleRuns(db, { staleAfterMs: critiqueCfg.totalTimeoutMs });
   if (reconciledStaleRuns > 0) {
-    console.warn(`[critique] reconcileStaleRuns flipped ${reconciledStaleRuns} stale running row(s) to interrupted`);
+    critiqueMetrics.bootReconciled.inc({}, reconciledStaleRuns);
+    critiqueLogger.warn('boot.reconcile', 'flipped stale running rows to interrupted', {
+      count: reconciledStaleRuns,
+      staleAfterMs: critiqueCfg.totalTimeoutMs,
+    });
   }
 
   if (process.env.OD_CODEX_DISABLE_PLUGINS === '1') {
@@ -749,6 +755,15 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
   app.get('/api/version', async (_req, res) => {
     const version = await readCurrentAppVersionInfo();
     res.json({ version });
+  });
+
+  // Critique Theater observability scrape endpoint (Phase 12). Returns the
+  // critique-scoped Prometheus registry as text/plain so a colocated Prometheus
+  // or Grafana Agent can scrape it without depending on a global metrics
+  // surface. See specs/current/critique-theater.md § Observability.
+  app.get('/api/metrics/critique', (_req, res) => {
+    res.set('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
+    res.send(critiqueMetrics.registry.render());
   });
 
   // ---- Projects (DB-backed) -------------------------------------------------
@@ -2950,7 +2965,10 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
       if (adapterStreamFormat !== 'plain') {
         if (!critiqueWarnedAdapters.has(adapterStreamFormat)) {
           critiqueWarnedAdapters.add(adapterStreamFormat);
-          console.warn(`[critique] adapter format=${adapterStreamFormat} is not plain-stream; skipping orchestrator and falling through to legacy generation`);
+          critiqueLogger.warn('adapter.unsupported', 'non-plain adapter falls through to legacy generation', {
+            adapter: typeof agentId === 'string' ? agentId : 'unknown',
+            streamFormat: adapterStreamFormat,
+          });
         }
       } else {
         const critiqueRunId = run.id;

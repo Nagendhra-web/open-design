@@ -5,6 +5,7 @@ import { createInterface } from 'node:readline';
 import { join } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import type { PanelEvent } from '@open-design/contracts/critique';
+import { critiqueMetrics } from './metrics.js';
 
 /**
  * Default gzip threshold (256 KiB). Files whose cumulative UTF-8 byte size
@@ -119,9 +120,11 @@ export async function writeTranscript(
         throw gzErr;
       }
       await rm(tempPath, { force: true });
+      critiqueMetrics.transcriptBytes.observe({ gzipped: 'true' }, totalBytes);
       return { path: 'transcript.ndjson.gz', bytes: totalBytes, gzipped: true };
     } else {
       await rename(tempPath, finalNdjson);
+      critiqueMetrics.transcriptBytes.observe({ gzipped: 'false' }, totalBytes);
       return { path: 'transcript.ndjson', bytes: totalBytes, gzipped: false };
     }
   } catch (err) {

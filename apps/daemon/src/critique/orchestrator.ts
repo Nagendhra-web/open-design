@@ -21,6 +21,8 @@ import {
   OversizeBlockError,
   MissingArtifactError,
 } from './errors.js';
+import { critiqueMetrics } from './metrics.js';
+import { critiqueLogger } from './logger.js';
 
 /**
  * Tolerance used when comparing the agent-supplied composite attribute on
@@ -126,8 +128,19 @@ export async function runOrchestrator(
     protocolVersion: cfg.protocolVersion,
   });
 
+  const runStartedAt = Date.now();
+  const log = critiqueLogger.withContext({ runId, projectId, adapter });
+  critiqueMetrics.runsStarted.inc({ adapter });
+  critiqueMetrics.inFlightRuns.inc({});
+  log.info('run.start', 'critique run started', {
+    protocolVersion: cfg.protocolVersion,
+    maxRounds: cfg.maxRounds,
+    threshold: cfg.scoreThreshold,
+  });
+
   const collectedEvents: PanelEvent[] = [];
   const roundStates = new Map<number, RoundState>();
+  const roundStartedAt = new Map<number, number>();
   const completedRounds: RoundState[] = [];
   let artifactPath: string | null = null;
   let shipEvent: Extract<PanelEvent, { type: 'ship' }> | null = null;
@@ -196,6 +209,10 @@ export async function runOrchestrator(
           if (event.round !== currentRoundN) {
             currentRoundN = event.round;
             roundDeadline = Date.now() + cfg.perRoundTimeoutMs;
+            if (!roundStartedAt.has(event.round)) {
+              roundStartedAt.set(event.round, Date.now());
+              log.debug('round.start', 'round opened', { round: event.round });
+            }
           }
           break;
         }
@@ -240,6 +257,23 @@ export async function runOrchestrator(
             }
             completedRounds.push({ ...rs });
           }
+          const startedAt = roundStartedAt.get(event.round);
+          if (startedAt !== undefined) {
+            critiqueMetrics.roundDurationMs.observe({}, Math.max(0, Date.now() - startedAt));
+          }
+          critiqueMetrics.roundsCompleted.inc({ decision: event.decision });
+          // Observability uses the daemon-authoritative composite/mustFix so
+          // dashboards reflect what scored, not what the agent claimed.
+          const observedComposite = rs?.composite ?? event.composite;
+          const observedMustFix = rs?.mustFix ?? event.mustFix;
+          critiqueMetrics.compositeScore.observe({}, Math.max(0, observedComposite));
+          log.info('round.end', 'round closed', {
+            round: event.round,
+            composite: observedComposite,
+            mustFix: observedMustFix,
+            decision: event.decision,
+            agentComposite: event.composite,
+          });
           roundDeadline = null;
           break;
         }
@@ -253,6 +287,15 @@ export async function runOrchestrator(
           // Extract designer round-1 ARTIFACT reference from dimNote is not
           // our job here; artifact path comes from the ship event's artifactRef
           // or from a panelist block. We store the artifactId from the ship event below.
+          break;
+        }
+
+        case 'parser_warning': {
+          critiqueMetrics.parserWarnings.inc({ kind: event.kind });
+          log.warn('parser.warning', 'parser warning', {
+            kind: event.kind,
+            position: event.position,
+          });
           break;
         }
 
@@ -319,6 +362,8 @@ export async function runOrchestrator(
         };
         collectedEvents.push(failedEvent);
         bus.emit(panelEventToSse(failedEvent));
+        critiqueMetrics.failedRuns.inc({ cause: 'orchestrator_internal' });
+        log.error('run.no_ship', 'no SHIP and no fallback round', {});
       }
     }
   } catch (err) {
@@ -354,6 +399,9 @@ export async function runOrchestrator(
       };
       collectedEvents.push(interruptedEvent);
       bus.emit(panelEventToSse(interruptedEvent));
+      log.warn('run.interrupted', 'run aborted via signal', {
+        bestRound: completedRounds.length,
+      });
     } else if (err instanceof TimeoutError) {
       finalStatus = 'timed_out';
       // Defect 7: ship best-so-far when at least one round completed.
@@ -381,6 +429,8 @@ export async function runOrchestrator(
       };
       collectedEvents.push(failedEvent);
       bus.emit(panelEventToSse(failedEvent));
+      critiqueMetrics.failedRuns.inc({ cause: err.cause });
+      log.warn('run.timeout', 'run timed out', { cause: err.cause });
     } else if (err instanceof ChildExitError) {
       finalStatus = 'failed';
       const failedEvent: Extract<PanelEvent, { type: 'failed' }> = {
@@ -390,6 +440,8 @@ export async function runOrchestrator(
       };
       collectedEvents.push(failedEvent);
       bus.emit(panelEventToSse(failedEvent));
+      critiqueMetrics.failedRuns.inc({ cause: 'cli_exit_nonzero' });
+      log.error('run.child_exit', 'child process exited non-zero', { code: err.code });
     } else if (
       err instanceof MalformedBlockError ||
       err instanceof OversizeBlockError ||
@@ -408,6 +460,8 @@ export async function runOrchestrator(
       };
       collectedEvents.push(degradedEvent);
       bus.emit(panelEventToSse(degradedEvent));
+      critiqueMetrics.degradedRuns.inc({ reason });
+      log.warn('run.degraded', 'run degraded', { reason });
     } else {
       finalStatus = 'failed';
       const failedEvent: Extract<PanelEvent, { type: 'failed' }> = {
@@ -417,6 +471,11 @@ export async function runOrchestrator(
       };
       collectedEvents.push(failedEvent);
       bus.emit(panelEventToSse(failedEvent));
+      critiqueMetrics.failedRuns.inc({ cause: 'orchestrator_internal' });
+      log.error('run.internal_error', 'orchestrator internal error', {
+        errorName: err instanceof Error ? err.name : 'Unknown',
+        errorMessage: err instanceof Error ? err.message : String(err),
+      });
     }
   }
 
@@ -446,6 +505,21 @@ export async function runOrchestrator(
     rounds: roundsSummary,
     transcriptPath,
     artifactPath,
+  });
+
+  // Run-completion observability. Decrement in-flight gauge regardless of how
+  // we got here so a failed/timed-out/aborted run can never leak the gauge.
+  critiqueMetrics.inFlightRuns.dec({});
+  critiqueMetrics.runsCompleted.inc({ status: finalStatus, adapter });
+  critiqueMetrics.runDurationMs.observe(
+    { status: finalStatus },
+    Math.max(0, Date.now() - runStartedAt),
+  );
+  log.info('run.end', 'critique run completed', {
+    status: finalStatus,
+    composite: finalComposite,
+    rounds: roundsSummary.length,
+    durationMs: Date.now() - runStartedAt,
   });
 
   return {
