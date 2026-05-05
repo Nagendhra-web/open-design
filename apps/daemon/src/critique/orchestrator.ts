@@ -182,7 +182,19 @@ export async function runOrchestrator(
       artifactId: params.artifactId,
     };
 
+    let maxRoundsReached = false;
     for await (const event of parseCritiqueStream(timedSource, parserOpts)) {
+      // After cfg.maxRounds closed rounds without a SHIP, give the parser
+      // exactly one more event for the SHIP to arrive. If anything other
+      // than a ship event shows up next, terminate the loop and apply the
+      // no-SHIP fallback policy. This stops an agent from emitting round
+      // 4, 5, ... beyond the configured hard limit and consuming runtime
+      // until the total timeout fires.
+      if (maxRoundsReached && event.type !== 'ship') {
+        killChild();
+        break;
+      }
+
       // Ship events are buffered, not emitted raw. The normalized ship event
       // (with daemon-authoritative status/composite from decideRound(...))
       // is emitted after the loop so SSE clients and the transcript only
@@ -254,11 +266,28 @@ export async function runOrchestrator(
             completedRounds.push({ ...rs });
           }
           roundDeadline = null;
+          // Once the configured hard limit of closed rounds is reached we
+          // arm the maxRoundsReached flag. The next iteration of the
+          // for-await loop allows a SHIP to land (the spec lets SHIP
+          // immediately follow the final round_end), but anything else
+          // terminates the loop so the orchestrator falls through to the
+          // no-SHIP fallback policy.
+          if (completedRounds.length >= cfg.maxRounds && shipEvent === null) {
+            maxRoundsReached = true;
+          }
           break;
         }
 
         case 'ship': {
+          // First accepted SHIP is buffered (not emitted) and ends the
+          // parser loop immediately. Continuing to consume stdout until
+          // the source closes would let a CLI that emits a complete valid
+          // <SHIP> and then hangs get raced by applyTimeouts(...) until
+          // totalTimeoutMs, persisting timed_out instead of the already
+          // converged ship decision. The child is killed here so the
+          // process doesn't linger.
           shipEvent = event;
+          killChild();
           break;
         }
 
@@ -272,6 +301,13 @@ export async function runOrchestrator(
         default:
           break;
       }
+
+      // Once an accepted SHIP is buffered, terminate the parser loop so
+      // we stop reading stdout. The 'break' inside the switch only exits
+      // the switch; this breaks the for-await loop. The maxRounds limit
+      // is enforced at the top of the loop instead, after giving the
+      // SHIP one more iteration to arrive.
+      if (shipEvent !== null) break;
     }
 
     // 3. Determine final status and composite.

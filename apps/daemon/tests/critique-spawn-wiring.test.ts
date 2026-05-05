@@ -144,6 +144,64 @@ describe('spawn wiring - cfg.enabled=true (orchestrator path)', () => {
     expect(eventNames).toContain('critique.ship');
   });
 
+  it('the server-style bus emits critique.* SSE channels with contract payloads, not the legacy agent channel (round 5 review)', async () => {
+    // This bus mirrors apps/daemon/src/server.ts exactly: the orchestrator
+    // emits CritiqueSseEvent variants (with .event = 'critique.run_started'
+    // etc.), and the server's bus forwards each frame as send(e.event, e.data)
+    // so SSE clients see the contract event name and the contract payload
+    // unwrapped. Anything that wraps the frame inside a generic 'agent'
+    // channel (the previous wiring) would surface here as a frame with
+    // channel='agent' and a nested {event, data} blob, which this test guards
+    // against.
+    const cfg = loadCritiqueConfigFromEnv({ OD_CRITIQUE_ENABLED: '1' });
+    const sentFrames: Array<{ event: string; data: unknown }> = [];
+    const sendFn = (event: string, data: unknown) => { sentFrames.push({ event, data }); };
+    const serverStyleBus: CritiqueSseBus = { emit: (e) => sendFn(e.event, e.data) };
+
+    async function* mockStdout(): AsyncIterable<string> {
+      yield '<CRITIQUE_RUN version="1" maxRounds="3" threshold="8.0" scale="10">\n';
+      yield '  <ROUND n="1">\n';
+      yield '    <PANELIST role="designer"><NOTES>v1</NOTES><ARTIFACT mime="text/html"><![CDATA[<html></html>]]></ARTIFACT></PANELIST>\n';
+      yield '    <PANELIST role="critic" score="9.0"><DIM name="h" score="9">ok</DIM></PANELIST>\n';
+      yield '    <PANELIST role="brand" score="9.0"><DIM name="v" score="9">ok</DIM></PANELIST>\n';
+      yield '    <PANELIST role="a11y" score="9.0"><DIM name="c" score="9">ok</DIM></PANELIST>\n';
+      yield '    <PANELIST role="copy" score="9.0"><DIM name="cl" score="9">ok</DIM></PANELIST>\n';
+      yield '    <ROUND_END n="1" composite="9.0" must_fix="0" decision="ship"><REASON>ok</REASON></ROUND_END>\n';
+      yield '  </ROUND>\n';
+      yield '  <SHIP round="1" composite="9.0" status="shipped"><ARTIFACT mime="text/html"><![CDATA[<html></html>]]></ARTIFACT><SUMMARY>ok</SUMMARY></SHIP>\n';
+      yield '</CRITIQUE_RUN>\n';
+    }
+
+    await runOrchestrator({
+      runId: 'sse-channel-run',
+      projectId: 'p1',
+      conversationId: null,
+      artifactId: 'a1',
+      artifactDir: join(tmpDir, 'sse-channel-run'),
+      adapter: 'claude',
+      cfg,
+      db,
+      bus: serverStyleBus,
+      stdout: mockStdout(),
+    });
+
+    // The legacy 'agent' channel must never appear when the orchestrator's
+    // critique events flow through the new bus.
+    expect(sentFrames.find((f) => f.event === 'agent')).toBeUndefined();
+
+    // Each contract event name must be present on its own SSE channel.
+    expect(sentFrames.find((f) => f.event === 'critique.run_started')).toBeDefined();
+    expect(sentFrames.find((f) => f.event === 'critique.ship')).toBeDefined();
+
+    // Payload is the contract's PanelEvent payload (sans 'type'), not a
+    // nested {event, data} envelope.
+    const runStartedFrame = sentFrames.find((f) => f.event === 'critique.run_started');
+    const data = runStartedFrame?.data as Record<string, unknown> | undefined;
+    expect(data?.['runId']).toBe('sse-channel-run');
+    expect(data?.['protocolVersion']).toBeDefined();
+    expect(data?.['event']).toBeUndefined();
+  });
+
   it('errors thrown by the orchestrator surface to the caller', async () => {
     const cfg = loadCritiqueConfigFromEnv({ OD_CRITIQUE_ENABLED: '1' });
 
