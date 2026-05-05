@@ -2954,7 +2954,12 @@ export async function startServer({ port = 7456, host = process.env.OD_BIND_HOST
         const stdoutIterable = (async function* () {
           for await (const chunk of child.stdout) yield String(chunk);
         })();
-        const critiqueBus = { emit: (e) => send('agent', e) };
+        // Emit each CritiqueSseEvent on its own contract-defined channel
+        // (critique.run_started, critique.ship, critique.failed, ...) rather
+        // than wrapping the frame in the legacy 'agent' channel. Clients that
+        // subscribe to the new event names see them directly with the
+        // contract payload as event.data.
+        const critiqueBus = { emit: (e) => send(e.event, e.data) };
 
         // Stderr forwarding and child.on('error') must be wired BEFORE the
         // orchestrator awaits stdout. Otherwise a CLI that floods stderr can
